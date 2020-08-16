@@ -9,7 +9,7 @@ package kattis;
  * @author tom 
  *
  */
-class Cube {
+public class Cube {
 	private int x, y, z;
 
 	public Cube(int x, int y, int z) {

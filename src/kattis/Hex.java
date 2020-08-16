@@ -11,7 +11,7 @@ package kattis;
  *
  */
 
-class Hex {
+public class Hex {
 	private int column = 0;
 	private int row = 0;
 

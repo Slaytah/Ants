@@ -1,9 +1,14 @@
-package kattis;
+package honeycomb;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import graph.Graph;
+import graph.GraphNode;
+import kattis.Cube;
+import kattis.Hex;
 
 /**
  * 
@@ -14,7 +19,7 @@ import java.util.List;
  * the url though.
  */
 
-class HoneycombMap implements Graph{
+public class HoneycombMap implements Graph{
 	private int mEdgeLength;
 	HoneycombCell mHexArray[][];
 	Point xyArray[];

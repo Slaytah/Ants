@@ -1,6 +1,9 @@
-package kattis;
+package honeycomb;
 
 import java.util.Comparator;
+
+import graph.GraphNode;
+import kattis.Hex;
 
 /**
  * A honeycomb cell. Can be filled with wax which cannot be eaten through.
@@ -43,7 +46,6 @@ class HoneycombCell implements GraphNode{
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return Integer.toString(mId) + " (" + Integer.toString(mPriority) + ")";
 	}
 

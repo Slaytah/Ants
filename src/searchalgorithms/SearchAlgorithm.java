@@ -3,9 +3,9 @@ package searchalgorithms;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
+import graph.Graph;
+import graph.GraphNode;
 import graphics.FillNode;
-import kattis.Graph;
-import kattis.GraphNode;
 
 public class SearchAlgorithm {
 	FillNode mNodeFiller;

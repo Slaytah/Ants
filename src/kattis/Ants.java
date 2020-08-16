@@ -2,6 +2,7 @@ package kattis;
 import java.util.Scanner;
 
 import graphics.*;
+import honeycomb.HoneycombMap;
 import searchalgorithms.SearchAlgorithm;
 
 public class Ants {

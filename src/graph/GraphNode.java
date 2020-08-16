@@ -1,4 +1,4 @@
-package kattis;
+package graph;
 
 import java.util.Comparator;
 
