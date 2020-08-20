@@ -7,12 +7,12 @@ import searchalgorithms.SearchAlgorithm;
 
 public class Ants {
 	//input parameters
-	int mEdgeLength = 0;// max 20, 8000 - 6859 = 1141 max cells
-	int mMaxChew = 0;
+	int mEdgeLength = 0;//The length of each side of the hexagon. Max 20, 8000 - 6859 = 1141 max cells
+	int mMaxChew = 0;//the maximum number of cells the ant can chew through
 	int mStartId = 0;
 	int mGoalId = 0;
-	int mNWax = 0;
-	int[] mWaxCells = new int[mNWax];
+	int mNWax = 0;//number of wax-filled cells
+	int[] mWaxCells = new int[mNWax];//array of ids with waxed-up cells.
 	
 	public Ants() {
 		Scanner sc = new Scanner(System.in);
