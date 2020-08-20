@@ -2,6 +2,14 @@ package graph;
 
 import java.util.ArrayList;
 
+/*
+represent a weighted directed graphs (i.e. a collection of nodes that can be
+traversed at some or no cost). This feller can explain it better than I ever
+could: https://www.redblobgames.com/pathfinding/grids/graphs.html
+
+Main functionality is get neighbouring nodes, get distance between two nodes, 
+and get cost of moving from one node to another node.
+*/
 public interface Graph {
 	int getCost(GraphNode n1, GraphNode n2);
 	int getDistance(GraphNode n1, GraphNode n2);
