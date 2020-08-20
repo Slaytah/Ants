@@ -153,7 +153,6 @@ public class SearchAlgorithm {
 				}
 
 			} else {
-				// we're done
 				// System.out.println("FOUND IT!");
 				ArrayList<Integer> path = new ArrayList<Integer>();
 
