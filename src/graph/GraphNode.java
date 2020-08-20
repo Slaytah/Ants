@@ -2,6 +2,10 @@ package graph;
 
 import java.util.Comparator;
 
+/*
+Interface for a node in a graph that can be traversed using 
+a priority-based pathfinding algorithm such as Dijkstra
+*/
 public interface GraphNode {
 	public int getId();
 	public void setId(int id);
