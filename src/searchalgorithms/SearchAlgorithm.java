@@ -64,10 +64,7 @@ public class SearchAlgorithm {
 					// to neighbouring node. Get distance only ever returns 1 in a grid
 					// so... record how far this node is from our start point. update new cost with
 					// distance from source ( and distance to goal if A*)
-					newCost = costSoFar[current.getId()] + 1;// getDistance(current.getPos(),
-																// currentNeighbour.getPos());Always returns 1
-					//System.out.println("\n neighbour1 id = " + currentNeighbour.getId() + " cost so far "
-						//	+ costSoFar[current.getId()] + " new cost " + newCost);
+					newCost = costSoFar[current.getId()] + 1;// getDistance(current.getPos(), currentNeighbour.getPos());Always returns 1
 
 					// only add to list if it hasn't already been examined (and thus had costSoFar
 					// != 0)
