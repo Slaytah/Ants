@@ -10,11 +10,22 @@ import graphics.FillNode;
 public class SearchAlgorithm {
 	FillNode mNodeFiller;
 	
+	/*
+	Makes the algorithm favour paths that lead to the goal
+	*/
+	private int heuristic(int startPos, int endPos) {
+		return getDistance(startPos, endPos);
+	}
+	
+	
 	public void addNodeFiller(FillNode nodeFiller) {
 		if (mNodeFiller == null) {
 			mNodeFiller = nodeFiller;
 		}
 	}
+	
+	
+	
 
 	public int astar(int startId, int goalId, Graph graph) {
 		int nodeCount = graph.getNodeCount();
