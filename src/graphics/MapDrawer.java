@@ -34,6 +34,13 @@ public class MapDrawer extends Frame implements FillNode {
 		mXyArray = new Point[total];
 	}
 	
+	/**
+	 * convert 1 based id into 0 based index into hex node coordinates
+	 * 
+	 * @param id id of the hex cell
+	 * @return id -1 , if id is within bounds
+	 * @throws Exception if id cannot be converted or if array empty
+	 */
 	private int convertIdToIndex(int id) throws Exception {
 		if (mXyArray.length > 0) {
 			if (id > 0 && id <= mXyArray.length) {
@@ -72,13 +79,14 @@ public class MapDrawer extends Frame implements FillNode {
 	private void drawMap(Graphics g) {
 		int y;
 
+		//draw first row up to and including longest (middle) row
 		for (y = 0; y < mEdgeLength; y++) {
 			drawRow(g, Color.BLACK, y);
 			mInitialY += SIDELENGTH * 1.5;// next row
 			mInitialX -= DIAGONAL;// step one to left as rows get longer until mid point
 		}
 
-		// now draw the rows under the widest point
+		// now draw the rows under widest row to last row
 		y -= 2;
 		mInitialX += DIAGONAL * 2;
 
@@ -106,6 +114,7 @@ public class MapDrawer extends Frame implements FillNode {
 			
 		}
 		
+		//reset counters so we can draw again if necessary
 		mCurrentId = 1;
 		mInitialX = 400;
 		mInitialY = 200;

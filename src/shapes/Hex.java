@@ -1,4 +1,4 @@
-package kattis;
+package shapes;
 
 /**
  * An axial coordinate in a hex grid

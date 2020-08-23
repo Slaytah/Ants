@@ -12,9 +12,10 @@ public class SearchAlgorithm {
 	
 	/*
 	Makes the algorithm favour paths that lead to the goal
+	Nodes that are further from the goal will have a lower priority
 	*/
-	private int heuristic(int startPos, int endPos) {
-		return getDistance(startPos, endPos);
+	private int heuristic(Graph graph, GraphNode start, GraphNode destination) {
+		return graph.getDistance(start, destination);
 	}
 	
 	
@@ -23,9 +24,7 @@ public class SearchAlgorithm {
 			mNodeFiller = nodeFiller;
 		}
 	}
-	
-	
-	
+
 
 	public int astar(int startId, int goalId, Graph graph) {
 		int nodeCount = graph.getNodeCount();
@@ -77,6 +76,9 @@ public class SearchAlgorithm {
 							/* unexamined */ || newCost < costSoFar[currentNeighbour.getId()]/* found better route */) {
 
 						costSoFar[currentNeighbour.getId()] = newCost;
+						
+						//priority is distance currentNeightbour to start node +
+						//distance currentNeighbour to goal
 						currentNeighbour.setPriority(newCost
 								+ /* heuristic */graph.getDistance(goal, currentNeighbour));
 						frontier.add(currentNeighbour);

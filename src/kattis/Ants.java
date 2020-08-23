@@ -63,7 +63,7 @@ public class Ants {
 
 	public static void main(String args[]) {
 		System.out.println("ants");
-		int params[] = new int[]{5,6,7,8};
+		int params[] = new int[]{6,7,8,9};
 		Ants ants = new Ants(4,8,3,27,4,params);
 		ants.solution();
 	}

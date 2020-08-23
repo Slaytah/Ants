@@ -11,6 +11,7 @@ public interface GraphNode {
 	public void setId(int id);
 	public int getPriority();
 	public void setPriority(int priority);
+	
 	static public Comparator<GraphNode> getComparator() {
 		return new Comparator<GraphNode>() {
 			@Override

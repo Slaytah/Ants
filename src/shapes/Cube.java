@@ -1,4 +1,4 @@
-package kattis;
+package shapes;
 
 /**
  * A point in three dimensional space. Doesn't have to be a cube really,

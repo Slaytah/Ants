@@ -7,8 +7,8 @@ import java.util.List;
 
 import graph.Graph;
 import graph.GraphNode;
-import kattis.Cube;
-import kattis.Hex;
+import shapes.Cube;
+import shapes.Hex;
 
 /**
  * 
