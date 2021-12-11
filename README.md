@@ -2,6 +2,7 @@
 Implementations of Breadth first, Dijkstra and AStar algorithms, applied to a grid of hexagons.
 
 Why Ants? This was a programming test where the scenario given was:
+
 A honeycomb of hexagonals. Some filled with inedible wax and one with honey.
 An ant, tring to git his ant ass to the cell with honey in it. 
 The ant can only eat through a fixed number of cells before it gets tired, or gives up, 
