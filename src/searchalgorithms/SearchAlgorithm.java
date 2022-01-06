@@ -18,13 +18,11 @@ public class SearchAlgorithm {
 		return graph.getDistance(start, destination);
 	}
 	
-	
 	public void addNodeFiller(FillNode nodeFiller) {
 		if (mNodeFiller == null) {
 			mNodeFiller = nodeFiller;
 		}
 	}
-
 
 	public int astar(int startId, int goalId, Graph graph) {
 		int nodeCount = graph.getNodeCount();
@@ -44,7 +42,7 @@ public class SearchAlgorithm {
 
 		while (!frontier.isEmpty()) {
 			System.out.println("queue: " + frontier);
-			current = frontier.remove();			
+			current = frontier.remove();
 			System.out.println("current = " + current.getId());
 
 			// display current cell y filling it in
@@ -103,14 +101,14 @@ public class SearchAlgorithm {
 	}
 
 	/**
-	 * Dijkstra is just A* without the heuristic, I thbink
+	 * Dijkstra is just A* without the heuristic.
 	 * 
 	 * @param mStartId
 	 * @param mGoalId
 	 * @param hexNodeArray
 	 * @return
 	 */
-	public static int dijkstra(int startId, int goalId, Graph graph) {
+	public int dijkstra(int startId, int goalId, Graph graph) {
 		int nodeCount = graph.getNodeCount();
 		int[] cameFrom = new int[nodeCount + 1];// ids are 1 based
 		int[] costSoFar = new int[nodeCount + 1];
@@ -187,9 +185,9 @@ public class SearchAlgorithm {
 	 * }
 	 * 
 	 */
-	static int breadthFirst(int startId, int goalId, Graph graph) {
+	public int breadthFirst(int startId, int goalId, Graph graph) {
 		int nodeCount = graph.getNodeCount();
-		int[] visited = new int[nodeCount];
+		int[] visited = new int[nodeCount + 1];
 		PriorityQueue<GraphNode> frontier = new PriorityQueue<GraphNode>(GraphNode.getComparator());
 		ArrayList<GraphNode> neighbours;
 		GraphNode current, next;
@@ -197,22 +195,26 @@ public class SearchAlgorithm {
 		GraphNode goal = graph.getNode(goalId);
 
 		frontier.add(start);
-		visited[start.getId()] = 0;
+		visited[start.getId()] = 1;
 
 		while (!frontier.isEmpty()) {
 			current = frontier.remove();
 
-			if (current.getId() != goal.getId()) {
+			/*if (current.getId() != goal.getId())*/ {
 				neighbours = graph.getNeighbours(current);
 
 				for (int i = 0; i < neighbours.size(); i++) {
 					next = neighbours.get(i);
+
 					if (visited[next.getId()] == 0) {
 						frontier.add(next);
 						visited[next.getId()] = 1;
 					}
 				}
-			}
+			} /*else {
+				System.out.println("doe!");
+				break;
+			}*/
 		}
 		return 0;
 	}

@@ -2,8 +2,8 @@ package shapes;
 
 /**
  * A point in three dimensional space. Doesn't have to be a cube really,
- * but this makes handling a hex grid sort of easier in terms of calculating distance
- * something about symmetry too, though I haven't figured out how that helps
+ * but this makes calculating distance in a hex grid more easy.
+ * Something about symmetry too, though I haven't figured out how that helps
  * https://www.redblobgames.com/grids/hexagons/
  * 
  * @author tom 

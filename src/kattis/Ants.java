@@ -54,10 +54,11 @@ public class Ants {
 			MapDrawer  awtGraphicsDemo = new MapDrawer(this.mEdgeLength, this.mWaxCells, this.mStartId, this.mGoalId);  
 			awtGraphicsDemo.setVisible(true);
 			SA.addNodeFiller(awtGraphicsDemo);
-			//System.out.println(SA.astar(startId, goalId, honeycombCellArray));		
-			System.out.println(SA.astar(mStartId, mGoalId, map));
+	
+			//System.out.println(SA.astar(mStartId, mGoalId, map));
+			System.out.println(SA.breadthFirst(mStartId, mGoalId, map));
 			
-			SearchAlgorithm.dijkstra(mStartId, mGoalId, map);
+			//SearchAlgorithm.dijkstra(mStartId, mGoalId, map);
 		}
 	}
 

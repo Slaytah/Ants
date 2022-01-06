@@ -1,15 +1,13 @@
 package honeycomb;
 
-import java.util.Comparator;
-
 import graph.GraphNode;
 import shapes.Hex;
 
 /**
  * A honeycomb cell. Can be filled with wax which cannot be eaten through.
  * 
- * Has an id because problem uses ids to identify wax cells, start cell, end
- * cell difficult to claculate distances from a list of ids..
+ * Has an id because problem uses IDs to identify wax cells, start cell, end
+ * cell difficult to calculate distances from a list of IDs..
  * 
  * @author tom
  *
@@ -17,36 +15,19 @@ import shapes.Hex;
 
 class HoneycombCell implements GraphNode{
 	private boolean isWax = false;
-	private int mId = -1; // 1 based id of hex. Hexlist pos + 1;
-	private Hex pos;// position in the hex grid. REdundant as it can be derived from [x],[y];
+	private int mId = -1; // 1 based id of hex. Hex list pos + 1;
+	private Hex pos;// position in the hex grid. REdundant as it can be derived from [x],[y]; <--WHAT x and y, you prick?
 	private int mPriority = 0;//essential to this implementation?
-	
-	private static Comparator<GraphNode> mComparator = null;
 
 	public HoneycombCell(Hex pos, int id) {
 		super();
 		this.pos = pos;
 		this.mId = id;
-		
-		if(mComparator == null) {
-			mComparator = new Comparator<GraphNode>() {
-				@Override
-				public int compare(GraphNode o1, GraphNode o2) {
-					if (o1.getPriority() > o2.getPriority()) {
-						return 1;
-					} else if (o1.getPriority() == o2.getPriority()) {
-						return 0;
-					} else {
-						return -1;
-					}
-				}
-			};
-		}
 	}
 	
 	@Override
 	public String toString() {
-		return Integer.toString(mId) + " (p" + Integer.toString(mPriority) + ")";
+		return Integer.toString(mId) + " position=" + pos.getR() + ", " + pos.getQ() + " (p" + Integer.toString(mPriority) + ")";
 	}
 
 	public int getRow() {

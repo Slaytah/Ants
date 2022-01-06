@@ -1,8 +1,6 @@
 package honeycomb;
 
-import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import graph.Graph;
@@ -21,29 +19,7 @@ import shapes.Hex;
 
 public class HoneycombMap implements Graph{
 	private int mEdgeLength;
-	HoneycombCell mHexArray[][];
-	Point xyArray[];
-	
-	static class HoneycombCellComparator implements Comparator<HoneycombCell> {
-		@Override
-		public int compare(HoneycombCell o1, HoneycombCell o2) {
-			if (o1.getPriority() > o2.getPriority()) {
-				return 1;
-			} else if (o1.getPriority() == o2.getPriority()) {
-				return 0;
-			} else {
-				return -1;
-			}
-		}
-	}
-
-	static class NonPriorityComparator implements Comparator<HoneycombCell> {
-
-		@Override
-		public int compare(HoneycombCell arg0, HoneycombCell arg1) {
-			return 0;
-		}
-	}
+	HoneycombCell mHoneycombArray[][];
 
 	static Hex cubeToAxial(Cube c) {
 		return new Hex(c.getX(), c.getZ());
@@ -65,26 +41,27 @@ public class HoneycombMap implements Graph{
 	}
 
 	/**
-	 * Construct a map of honeycomb cells
+	 * Construct an array of honeycombcells
 	 * 
-	 * @param edgeLength nmber of cells oer edge
-	 * @param waxCells array of cell ids 
+	 * @param edgeLength number of cells per edge
+	 * @param waxCells array of cell IDs 
 	 */
 	private void generateHoneycombMap(int edgeLength, int[] waxCells) {
 		int waxIndex = 0;
-		int nbounds = (edgeLength * 2) - 1;//edge 4 = 7 columns and rows (37 cells in total)  edge 5 = 9 = 65?
-		int rightCounter = nbounds - 1;
+		int bounds = (edgeLength * 2) - 1;//edge 4 = 7 columns and rows (37 cells in total)  edge 5 = 9 = 65?
+		int middleRow = (bounds - 1) / 2;
+		int rightCounter = bounds - 1;
 		int id = 1;
 		
 		mEdgeLength = edgeLength;
-		mHexArray = new HoneycombCell[(mEdgeLength * 2 - 1)][(mEdgeLength * 2 - 1)];
+		mHoneycombArray = new HoneycombCell[(mEdgeLength * 2 - 1)][(mEdgeLength * 2 - 1)];
 		
 
-		// construct map with axial coordinates.
+		// fill the array with Honeycomb cells
 		//row by row..	
-		for (int row = 0; row < nbounds; row++) {
-			if (row <= (nbounds - 1) / 2) {//break after handle middle (longest) row
-				for (int q = (mEdgeLength - 1) - row; q < nbounds; q++) {
+		for (int row = 0; row < bounds; row++) {
+			if (row <= middleRow) {//break after handle middle (longest) row
+				for (int q = (mEdgeLength - 1) - row; q < bounds; q++) {
 					HoneycombCell hexNode = new HoneycombCell(new Hex(q, row), id);
 
 					if (waxIndex < waxCells.length) {
@@ -94,35 +71,35 @@ public class HoneycombMap implements Graph{
 							waxIndex++;
 						}
 					}
-					mHexArray[row][q] = hexNode;//shuold probably swap this as we have y coordinate first..
+					mHoneycombArray[row][q] = hexNode;//shuold probably swap this as we have y coordinate first..
 					id++;
 				}
 			} else {
 				// now it swaps around so LEFT side is the same and RIGHT decreases
 				for (int q = 0; q < rightCounter; q++) {
 					HoneycombCell hexNode = new HoneycombCell(new Hex(q, row), id);
-					mHexArray[row][q] = hexNode;
+					mHoneycombArray[row][q] = hexNode;
 					id++;
 				}
 				rightCounter--;
 			}
 		}
+		System.out.println("eouqoru");
 	}
 
 	public HoneycombMap(int edgeLength, int[] waxCells) {
-		super();
 		generateHoneycombMap(edgeLength,waxCells);
 	}
 	
 	public HoneycombCell[][] getMap() {
-		return mHexArray;
+		return mHoneycombArray;
 	}
 
 	static int getNextColumnRight(HoneycombCell cell) {
 		return cell.getColumn() + 1;
 	}
 
-	static int getNextNextColumnLeft(HoneycombCell cell) {
+	static int getNextColumnLeft(HoneycombCell cell) {
 		return cell.getColumn()- 1;
 	}
 
@@ -146,143 +123,37 @@ public class HoneycombMap implements Graph{
 	 * this (in an edge = 2  map):
 	 * 
 	 * Array pos:	0	1	2			 
-	 * ID:
-	 * 					1	2
-	 * 				3 	4	5
-	 * 					6	7 
+	 * ID:		
+	 * 			0		1	2
+	 * 			1	3 	4	5
+	 * 			2	6	7 
 	 * 
 	 * So... if P = 4 [1][1],  neighbours = 5(n1),7(n2),6(n3),3(n4),1(n5),2(n6)
 	 * 
 	 * at array pos [1][2], [2][2],
 	 * 
-	 * @param cell     the cell whose neighbours you want to find.
+	 * @param currentCell     the cell whose neighbours you want to find.
 	 * @param hexArray 2d array of all cells in the map
 	 * @return list of neighbours as HoneycombCells
 	 */
-	static ArrayList<HoneycombCell> getHexNeighbours(HoneycombCell cell, HoneycombCell[][] hexArray) {
-		ArrayList<HoneycombCell> neighbours = new ArrayList<HoneycombCell>();
-		HoneycombCell neighbour;
-
-		/**
-		 * get cell to right of parameter cell (cells[p+1][r])
-		 * 
-		 *					  0  1  2		 
-		 * 		 x x 		0	[x][x]
-		 * 		x p * 		1[x][p][*]	
-		 * 		 x x		2	[x][x]
-		 */
-		neighbour = getHoneycombCell(getNextColumnRight(cell), cell.getRow() , hexArray);
-		
-		if (neighbour != null) {
-			neighbours.add(neighbour);
-		}
-
-		/**
-		 * get cell below and right of parameter cell 
-		 * 		 x x
-		 * 		x p x
-		 * 		 x *
-		 */
-		neighbour = getHoneycombCell(cell.getColumn(), getNextRowDown(cell), hexArray);
-		
-		if (neighbour != null) {
-			neighbours.add(neighbour);
-		}
-
-		/**
-		 * get cell to left and below 
-		 * 		 x x
-		 * 		x p x
-		 * 		 * x
-		 */
-		if (getNextNextColumnLeft(cell) >= 0) {
-			neighbour = getHoneycombCell(getNextNextColumnLeft(cell), getNextRowDown(cell), hexArray);
-			
-			if (neighbour != null) {
-				neighbours.add(neighbour);
-			}
-			
-			 /** ..along with cell left
-			 * 
-			 *		 x x 
-			 *		* p x 
-			 *		 x x
-			 */
-			neighbour = getHoneycombCell(getNextNextColumnLeft(cell), cell.getRow(), hexArray);
-			
-			if (neighbour != null) {
-				neighbours.add(neighbour);
-			}
-		}
-		
-		/**
-		 * get cell to left and above 
-		 * 		 * x
-		 * 		x p x
-		 * 		 x x
-		 * 
-		 * ..along with cell right and above
-		 *		 x * 
-		 *		x p x
-		 *		 x x
-		 */
-		if (getNextRowUp(cell) >= 0) {
-			neighbour = getHoneycombCell(cell.getColumn(), getNextRowUp(cell), hexArray);
-			
-			if (neighbour != null) {
-				neighbours.add(neighbour);
-			}
-			
-			neighbour = getHoneycombCell(getNextColumnRight(cell), getNextRowUp(cell), hexArray);
-			
-			if (neighbour != null) {
-				neighbours.add(neighbour);
-			}
-		}
-		return neighbours;
-	}
-	
-	/**
-	 * Find the neighbouring (n) cells adjacent to cell position P in following order:
-	 * 
-	 *	   n5 n6 
-	 *    n4 P n1
-	 *     n3 n2
-	 * 
-	 * 
-	 * This is the fun bit. Honeycomb Cells are stored in hexArray which looks like
-	 * this (in an edge = 2  map):
-	 * 
-	 * Array pos:	0	1	2			 
-	 * ID:
-	 * 					1	2
-	 * 				3 	4	5
-	 * 					6	7 
-	 * 
-	 * So... if P = 4 [1][1],  neighbours = 5(n1),7(n2),6(n3),3(n4),1(n5),2(n6)
-	 * 
-	 * at array pos [1][2], [2][2],
-	 * 
-	 * @param cell     the cell whose neighbours you want to find.
-	 * @param hexArray 2d array of all cells in the map
-	 * @return list of neighbours as HoneycombCells
-	 */
-	static ArrayList<GraphNode> getNeighbours(HoneycombCell cell, HoneycombCell[][] hexArray) {
+	static ArrayList<GraphNode> getNeighbours(HoneycombCell currentCell, HoneycombCell[][] hexArray) {
 		ArrayList<GraphNode> neighbours = new ArrayList<GraphNode>();
 		HoneycombCell neighbour;
 
+		System.out.print("current: " + currentCell.getId() + " neighbours:");
 		/**
 		 * get cell to right of parameter cell (cells[p+1][r])
 		 * 
-		 *					  0  1  2		 
-		 * 		 x x 		0	[x][x]
-		 * 		x p * 		1[x][p][*]	
-		 * 		 x x		2	[x][x]
+		 *					   0  1  2		 
+		 * 		 x x 		0 	 [x][x]
+		 * 		x p * 		1 [x][p][*]
+		 * 		 x x		2 [x][x]
 		 */
-		neighbour = getHoneycombCell(getNextColumnRight(cell), cell.getRow() , hexArray);
+		neighbour = getHoneycombCell(getNextColumnRight(currentCell), currentCell.getRow() , hexArray);
 		
 		if (neighbour != null) {
 			neighbours.add(neighbour);
+			System.out.print(" " + neighbour.getId());
 		}
 
 		/**
@@ -291,10 +162,11 @@ public class HoneycombMap implements Graph{
 		 * 		x p x
 		 * 		 x *
 		 */
-		neighbour = getHoneycombCell(cell.getColumn(), getNextRowDown(cell), hexArray);
+		neighbour = getHoneycombCell(currentCell.getColumn(), getNextRowDown(currentCell), hexArray);
 		
 		if (neighbour != null) {
 			neighbours.add(neighbour);
+			System.out.print(" " + neighbour.getId());
 		}
 
 		/**
@@ -303,11 +175,12 @@ public class HoneycombMap implements Graph{
 		 * 		x p x
 		 * 		 * x
 		 */
-		if (getNextNextColumnLeft(cell) >= 0) {
-			neighbour = getHoneycombCell(getNextNextColumnLeft(cell), getNextRowDown(cell), hexArray);
+		if (getNextColumnLeft(currentCell) >= 0) {
+			neighbour = getHoneycombCell(getNextColumnLeft(currentCell), getNextRowDown(currentCell), hexArray);
 			
 			if (neighbour != null) {
 				neighbours.add(neighbour);
+				System.out.print(" " + neighbour.getId());
 			}
 			
 			 /** ..along with cell left
@@ -316,10 +189,11 @@ public class HoneycombMap implements Graph{
 			 *		* p x 
 			 *		 x x
 			 */
-			neighbour = getHoneycombCell(getNextNextColumnLeft(cell), cell.getRow(), hexArray);
+			neighbour = getHoneycombCell(getNextColumnLeft(currentCell), currentCell.getRow(), hexArray);
 			
 			if (neighbour != null) {
 				neighbours.add(neighbour);
+				System.out.print(" " + neighbour.getId());
 			}
 		}
 		
@@ -334,21 +208,25 @@ public class HoneycombMap implements Graph{
 		 *		x p x
 		 *		 x x
 		 */
-		if (getNextRowUp(cell) >= 0) {
-			neighbour = getHoneycombCell(cell.getColumn(), getNextRowUp(cell), hexArray);
+		if (getNextRowUp(currentCell) >= 0) {
+			neighbour = getHoneycombCell(currentCell.getColumn(), getNextRowUp(currentCell), hexArray);
 			
 			if (neighbour != null) {
 				neighbours.add(neighbour);
+				System.out.print(" " + neighbour.getId());
 			}
 			
-			neighbour = getHoneycombCell(getNextColumnRight(cell), getNextRowUp(cell), hexArray);
+			neighbour = getHoneycombCell(getNextColumnRight(currentCell), getNextRowUp(currentCell), hexArray);
 			
 			if (neighbour != null) {
 				neighbours.add(neighbour);
+				System.out.print(" " + neighbour.getId());
 			}
 		}
+		System.out.println("");
 		return neighbours;
 	}
+	
 	/**
 	 * go through array until you find id. Could be optimised. Compare id with length of array
 	 * 
@@ -404,7 +282,6 @@ public class HoneycombMap implements Graph{
 		return null;
 	}
 
-
 	/**
 	 * Get a cell from a 2d array of cells
 	 * 
@@ -435,19 +312,19 @@ public class HoneycombMap implements Graph{
 
 	@Override
 	public int getDistance(GraphNode n1, GraphNode n2) {		
-		return getHexDistance(getHoneycombCell(n1.getId(),mHexArray).getPos(), getHoneycombCell(n2.getId(),mHexArray).getPos());
+		return getHexDistance(getHoneycombCell(n1.getId(),mHoneycombArray).getPos(), getHoneycombCell(n2.getId(),mHoneycombArray).getPos());
 	}
 
 	@Override
 	public ArrayList<GraphNode> getNeighbours(GraphNode node) {
-		HoneycombCell cell = getHoneycombCell(node.getId(), mHexArray);
+		HoneycombCell cell = getHoneycombCell(node.getId(), mHoneycombArray);
 		
-		return getNeighbours(cell, mHexArray);
+		return getNeighbours(cell, mHoneycombArray);
 	}
 
 	@Override
 	public GraphNode getNode(int nodeId) {
-		return getHoneycombCell(nodeId, mHexArray) ;
+		return getHoneycombCell(nodeId, mHoneycombArray) ;
 	}
 
 	@Override
