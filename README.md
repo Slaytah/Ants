@@ -5,8 +5,7 @@ Why Ants? This was a programming test where the scenario given was:
 
 A honeycomb of hexagonal cells. Some filled with inedible wax and one with honey.
 An ant, trying to git his ant ass to the cell with honey in it. 
-The ant can only eat through a fixed number of cells before it gets tired, or gives up, 
-or dies or something. 
+The ant can only eat through a fixed number of cells. 
 Find the shortest path from the start position (given by the id of the cell) and the end 
 position (id), avoiding the wax cells.
 
